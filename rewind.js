@@ -1,4 +1,5 @@
 import http from 'http';
+import fs, { createWriteStream } from "fs";
 
 /** @typedef { import('./rewind').KeywallRequest } KeywallRequest */
 /** @typedef { import('./rewind').KeywallResponse } KeywallResponse */
@@ -74,6 +75,7 @@ function clean(url) {
 export function log(type, ...val) {
     let opts = type;
     let logType = type;
+    let logMessage = `Log: ${ new Date().toISOString().split('T')[1] } - ${ logType }: ${ JSON.stringify(val) } \n`
     
     if (typeof logType !== 'string') {
         logType = opts.type;
@@ -96,7 +98,37 @@ export function log(type, ...val) {
             console.log(`${logType}:`, ...val);
             break;
     }
-    // TODO: log to service / print to logs folder
+    
+    if (!this.logsEnabled) {
+        return;
+    }
+
+    if (!fs.existsSync('./logs')){
+        fs.mkdirSync('./logs');
+    }
+    
+    try {
+        fs.readFileSync(`./logs/rewind-log-${new Date().toISOString().split('T')[0]}.txt`, "utf8")
+        fs.appendFile(`./logs/rewind-log-${new Date().toISOString().split('T')[0]}.txt`, 
+        logMessage, 
+        (err) => {
+            if (err) {
+                console.error('error writing logs',{err});
+            }
+            else {
+                // console.log("\nLogs added:",
+                // fs.readFileSync(`./logs/rewind-log-${new Date().toISOString().split('T')[0]}.txt`, "utf8"));
+            }
+          });
+    } catch (error) {
+        var writeStream = createWriteStream(`./logs/rewind-log-${new Date().toISOString().split('T')[0]}.txt`); 
+        writeStream.write(`Logs for ${new Date().toISOString().split('T')[0]} \n`);
+        writeStream.write(`\n`);
+        writeStream.write(logMessage);
+        writeStream.end();
+    }
+    // TODO: set a variable the use can set for clearing logs and how long they want to keep them
+    // e.g. delete logs older than 90 days if user sets 90 day span
 }
 
 export function useRouter() {
@@ -120,10 +152,10 @@ export function useRouter() {
  * ## Keywall Rewind
  * A lightweight express clone without the bells and whistles
  * 
- * @param {{base: string}} opts 
+ * @param {{base: string, logsEnabled: boolean}} opts 
  */
 function rewind(opts = { }) {
-    let { base = '/' } = opts;
+    let { base = '/', enableLogs = false } = opts;
     const { server } = setUp();
 
     function setUp() {
@@ -151,8 +183,10 @@ function rewind(opts = { }) {
         },
         server,
         base,
+        log,
+        logsEnabled,
         use(_module = null) {
-            log('use: ', _module.routes);
+            // log('use: ', _module.routes);
             if (_module.type === 'routes') {
                 const routes = _module.routes;
 
@@ -269,7 +303,7 @@ function rewind(opts = { }) {
             this.config.corsOrigins = corsOrigins;
         },
         onRequest(){
-            log('request', {
+            this.log('request', {
                 'request-url': this.req.reqUrl,
                 'request-query': this.req.query,
                 'request-method': this.req.method,
@@ -280,7 +314,7 @@ function rewind(opts = { }) {
             for (let i = 0; i < this.routes.length; i++) {
                 const [ method, url ] = this.routes[i];
                 this.currentCbChain = this.routes[i][2];
-                log("request", "all routes: ", '\n route: ',method, url, '\n req: ',this.req.method, this.req.reqUrl)
+                // this.log("request", "all routes: ", '\n route: ',method, url, '\n req: ',this.req.method, this.req.reqUrl)
                 if (
                     method === this.req.method && 
                     url === this.req.reqUrl
