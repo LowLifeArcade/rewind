@@ -1,6 +1,6 @@
 # Keywall Rewind
 
-A lightweight node server library
+A lightweight node server library with request and error logging
 
 <br />
 <div style="display:flex;justify-content:center;">
@@ -10,18 +10,18 @@ A lightweight node server library
 
 ## Directions
 
-> `npm i keywall-rewind`
+> `npm i @lowlifearcade/rewind`
+
+#### Example:
 
 ```js
+    import rewind from 'rewind';
+
     const app = rewind();
     app.get('/', async (req, res) => {
-        res.send('keywall rewind')
-    })
-    app.listen(1337, () => console.log('server running on 1337'))
-    
-    const router = useRouter();
-    router.setBase('/keywall');
-    router.get('/', async (req, res) => {
-        res.send('keywall rewind router')
-    })
+        res.send('keywall rewind');
+    });
+    app.listen(1337, () => {
+        console.log('server running on 1337');
+    });
 ```

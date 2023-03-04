@@ -1,7 +1,7 @@
 {
-  "name": "keywall-rewind",
+  "name": "@lowlifearcade/rewind",
   "version": "1.0.0",
-  "description": "A lightweight backend library",
+  "description": "A lightweight backend library with automatic logging",
   "main": "rewind.js",
   "type": "module",
   "scripts": {
