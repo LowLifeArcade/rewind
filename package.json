@@ -1,0 +1,12 @@
+{
+  "name": "keywall-rewind",
+  "version": "1.0.0",
+  "description": "A lightweight backend library",
+  "main": "rewind.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "lowlifearcade",
+  "license": "ISC"
+}
