@@ -8,20 +8,40 @@ A lightweight node server library with request and error logging
 </div>
 <br />
 
-## Directions
-
-> `npm i @lowlifearcade/rewind`
-
-#### Example:
-
 ```js
-    import rewind from 'rewind';
+    import rewind from 'rewind'; // "type": "module" in package.json
 
     const app = rewind();
     app.get('/', async (req, res) => {
-        res.send('keywall rewind');
+        res.send('Keywall Rewind');
     });
     app.listen(1337, () => {
         console.log('server running on 1337');
     });
+```
+
+## Installation
+
+```console
+$ npm install express
+```
+
+### Configuration
+
+Pass a config object on creation
+
+```js
+const app = rewind({
+    base: '/keywall'
+})
+```
+
+Default:
+```js
+{ 
+    base = '/', 
+    loggingEnabled = true,
+    logsPath = null,
+    logTTL = null,
+}
 ```
