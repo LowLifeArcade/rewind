@@ -1,6 +1,6 @@
 # Keywall Rewind
 
-A lightweight server rendered framework
+A lightweight node server library
 
 <br />
 <div style="display:flex;justify-content:center;">
