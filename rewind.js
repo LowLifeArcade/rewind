@@ -1,15 +1,22 @@
-/** @typedef { import('./rewind').KeywallRequest } KeywallRequest */
-/** @typedef { import('./rewind').KeywallResponse } KeywallResponse */
-/** @typedef { ((req: KeywallRequest, res: KeywallResponse, next: () => void) => void)[] } KeywallCbs */
-
-import http from 'http';
+import http, { IncomingMessage, ServerResponse } from 'http';
 import fs, { createWriteStream } from "fs";
-
 
 /**
     ## Keywall Rewind
     A lightweight express clone without the bells and whistles
 
+    @typedef { {
+        query: string,
+        reqUrl: string,
+    } & IncomingMessage } KeywallRequest
+    @typedef { {
+        setHeaders(headers: {[header:string]: string}): this;
+        send: (msg: string | Object) => void
+    } & ServerResponse } KeywallResponse
+    @typedef { 
+        ((req: KeywallRequest, res: KeywallResponse, next: () => void) => void)[] 
+    } KeywallCbs 
+    
     @param {{
         base: string, 
         loggingEnabled: boolean,
