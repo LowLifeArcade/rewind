@@ -1,4 +1,4 @@
-# Keywall Rewind
+# Rewind
 
 A lightweight node server library with request and error logging out of the box.
 
