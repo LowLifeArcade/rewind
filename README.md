@@ -14,7 +14,7 @@ A lightweight node server library with request and error logging out of the box.
     const app = rewind();
     
     app.get('/', async (req, res) => {
-        res.send('Keywall Rewind');
+        res.send('< Rewind <');
     });
     app.listen(1337, () => {
         console.log('server running on 1337');
