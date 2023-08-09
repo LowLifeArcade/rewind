@@ -4,7 +4,7 @@ A lightweight node server library with request and error logging out of the box.
 
 <br />
 <div style="display:flex;justify-content:center;">
-    <img src="https://github.com/LowLifeArcade/keywall/blob/main/keywall-logo.png?raw=true" alt="drawing" width="300"/>
+    <img src="rewind-logo.png" alt="drawing" width="300"/>
 </div>
 <br />
 
